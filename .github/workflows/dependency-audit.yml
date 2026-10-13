@@ -1,0 +1,146 @@
+# Managed by the SOC 2 dependency-audit workstream
+name: Monthly dependency audit
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "0 9 1-7 * *"
+
+permissions:
+  contents: read
+
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Only run on the first Monday of the month
+        id: gate
+        run: |
+          if [ "${{ github.event_name }}" = "schedule" ] && [ "$(date +%u)" != "1" ]; then
+            echo "Not the first Monday of the month, skipping."
+            echo "run=false" >> "$GITHUB_OUTPUT"
+          else
+            echo "run=true" >> "$GITHUB_OUTPUT"
+          fi
+
+      - uses: actions/checkout@v4
+        if: steps.gate.outputs.run == 'true'
+
+      - name: Prepare audit folder
+        if: steps.gate.outputs.run == 'true'
+        run: mkdir -p "$GITHUB_WORKSPACE/audit"
+
+      - name: Summarize findings
+        id: summary
+        if: always() && steps.gate.outputs.run == 'true'
+        run: |
+          python3 - audit <<'PY'
+          # Counts dependency-audit findings by severity. Reads <dir>/{npm,pnpm,pip,cargo}-*.json.
+          import glob, json, os, sys, urllib.request
+
+          SEVS = ("critical", "high", "moderate", "low", "unknown")
+          _cache = {}
+
+
+          def _osv(vid):
+              try:
+                  with urllib.request.urlopen("https://api.osv.dev/v1/vulns/" + vid, timeout=20) as r:
+                      return json.load(r)
+              except Exception:
+                  return None
+
+
+          def osv_sev(vid, aliases=None):
+              ids = [vid] + list(aliases or [])
+              ghsa = next((i for i in ids if i.startswith("GHSA-")), None)
+              key = ghsa or vid
+              if key in _cache:
+                  return _cache[key]
+              sev = "unknown"
+              rec = _osv(key) if key else None
+              if rec and not ghsa:
+                  g = next((a for a in rec.get("aliases", []) if a.startswith("GHSA-")), None)
+                  if g:
+                      rec = _osv(g) or rec
+              if rec:
+                  s = (rec.get("database_specific") or {}).get("severity")
+                  if s:
+                      sev = str(s).lower()
+              sev = {"medium": "moderate"}.get(sev, sev)
+              if sev not in SEVS:
+                  sev = "unknown"
+              _cache[key] = sev
+              return sev
+
+
+          def count_file(path):
+              eco = os.path.basename(path).split("-", 1)[0]
+              c = dict.fromkeys(SEVS, 0)
+              try:
+                  with open(path, encoding="utf-8", errors="replace") as f:
+                      txt = f.read()
+                  j = json.loads(txt) if txt.strip() else None
+              except Exception as e:
+                  return eco, c, "unparseable output: %s" % str(e)[:120]
+              if j is None:
+                  return eco, c, "empty output"
+              err = None
+              if eco in ("npm", "pnpm"):
+                  if isinstance(j, dict) and "error" in j:
+                      e = j["error"]
+                      err = str(e.get("summary") or e.get("code") or e)[:200] if isinstance(e, dict) else str(e)[:200]
+                  v = ((j.get("metadata") or {}).get("vulnerabilities") or {}) if isinstance(j, dict) else {}
+                  for k in SEVS[:4]:
+                      c[k] = int(v.get(k, 0) or 0)
+              elif eco == "pip":
+                  for d in j.get("dependencies", []):
+                      for v in d.get("vulns") or []:
+                          c[osv_sev(v.get("id", ""), v.get("aliases"))] += 1
+              elif eco == "cargo":
+                  for v in (j.get("vulnerabilities") or {}).get("list") or []:
+                      a = v.get("advisory") or {}
+                      c[osv_sev(a.get("id", ""), a.get("aliases"))] += 1
+              return eco, c, err
+
+
+          def main(d):
+              lines, crit = [], 0
+              for p in sorted(glob.glob(os.path.join(d, "*.json"))):
+                  eco, c, err = count_file(p)
+                  crit += c["critical"]
+                  lines.append("%s: critical=%d high=%d moderate=%d low=%d unknown=%d%s" % (
+                      os.path.basename(p), c["critical"], c["high"], c["moderate"], c["low"], c["unknown"],
+                      (" ERROR: " + err) if err else ""))
+              if not lines:
+                  lines.append("No audit output files found.")
+              lines.append("TOTAL critical=%d" % crit)
+              out = "\n".join(lines)
+              print(out)
+              with open(os.path.join(d, "SUMMARY.txt"), "w", encoding="utf-8") as f:
+                  f.write(out + "\n")
+              gho = os.environ.get("GITHUB_OUTPUT")
+              if gho:
+                  with open(gho, "a", encoding="utf-8") as f:
+                      f.write("critical=%d\n" % crit)
+
+
+          if __name__ == "__main__":
+              main(sys.argv[1] if len(sys.argv) > 1 else "audit")
+          PY
+
+      - name: Upload audit results
+        if: always() && steps.gate.outputs.run == 'true'
+        uses: actions/upload-artifact@v4
+        with:
+          name: dependency-audit-${{ github.run_id }}
+          path: audit/
+          retention-days: 400
+
+      - name: Fail on critical findings
+        if: always() && steps.gate.outputs.run == 'true'
+        run: |
+          c="${{ steps.summary.outputs.critical }}"
+          if [ "${c:-0}" -gt 0 ]; then
+            echo "::error::$c critical dependency finding(s). See the dependency-audit artifact."
+            exit 1
+          fi
