@@ -1,0 +1,28 @@
+{
+  "name": "accusights",
+  "owner": {
+    "name": "AccuSights",
+    "url": "https://accusights.com"
+  },
+  "metadata": {
+    "description": "The AccuSights SOC and compliance agent, packaged as skills that run inside the client's own tenancy. Local-first reduction, tokenised model calls, hash-chained evidence, human-approved action.",
+    "version": "0.1.0"
+  },
+  "plugins": [
+    {
+      "name": "accusights-core",
+      "source": "./plugins/accusights-core",
+      "description": "Required base layer. Sensitive-data tokenisation in front of the model, local-first deterministic reduction before any AI call, and the versioned hash-chained evidence ledger every other AccuSights skill writes to."
+    },
+    {
+      "name": "accusights-compliance",
+      "source": "./plugins/accusights-compliance",
+      "description": "Continuous compliance and governance: industry-to-framework selection, control-to-signal evaluation, posture scoring, drift detection, policy lifecycle, audit readiness, and underwriter-grade risk evidence. Requires accusights-core."
+    },
+    {
+      "name": "accusights-soc",
+      "source": "./plugins/accusights-soc",
+      "description": "Security operations: reachability-filtered alert triage, indexed verdict memory, IOC correlation, compound-risk detection, approval-gated containment, and response-authority checks. Requires accusights-core."
+    }
+  ]
+}

@@ -1,0 +1,132 @@
+{
+  "entries": [
+    {
+      "bytes": 5677,
+      "checksum": "sha256:40b2906b1f98107c5b36e2c9eef1666ec972c83d21ed586b7da2600a61ead602",
+      "kind": "skill",
+      "path": "accusights-compliance/audit-readiness"
+    },
+    {
+      "bytes": 5176,
+      "checksum": "sha256:8aa7bfb51f39f0153e6777b22857bddb474492ef1855479d0bf95a7212f53674",
+      "kind": "skill",
+      "path": "accusights-compliance/control-drift"
+    },
+    {
+      "bytes": 5542,
+      "checksum": "sha256:40ec708e8a2b5397563e4b0dcf04df5f314d70e168801583becc877ccf262959",
+      "kind": "skill",
+      "path": "accusights-compliance/control-signal-map"
+    },
+    {
+      "bytes": 4643,
+      "checksum": "sha256:41668735ea07c43329cc163fc3acdd2f0de4a27c12ac88c717ca6b9bf67d94ff",
+      "kind": "reference",
+      "path": "accusights-compliance/control-signal-map/references/control-catalog.md"
+    },
+    {
+      "bytes": 4798,
+      "checksum": "sha256:9ea5082a98ad255172f5253f13a03b61b8638014ef806ee81b5ea0ba4775a23c",
+      "kind": "skill",
+      "path": "accusights-compliance/framework-select"
+    },
+    {
+      "bytes": 3589,
+      "checksum": "sha256:fb18d2574b4614855d3a1f7e386af354a94ce86154c88c2c0d356b70f99986c3",
+      "kind": "reference",
+      "path": "accusights-compliance/framework-select/references/framework-map.md"
+    },
+    {
+      "bytes": 5970,
+      "checksum": "sha256:d8acad01bf56fff52c777164c28ddb87c7e0e089dc56433d481364a9f7ff5571",
+      "kind": "skill",
+      "path": "accusights-compliance/insurance-evidence"
+    },
+    {
+      "bytes": 6421,
+      "checksum": "sha256:bb318ee4810ddb0d8cb4ef245b4d48e44b45c4c08f2ddca28b8716221e2ed269",
+      "kind": "skill",
+      "path": "accusights-compliance/policy-builder"
+    },
+    {
+      "bytes": 4226,
+      "checksum": "sha256:d77a2437d02554f6ce92bf911a2dbaea6effe5408885f4b4afc3e1a579013ec5",
+      "kind": "reference",
+      "path": "accusights-compliance/policy-builder/references/policy-packs.md"
+    },
+    {
+      "bytes": 4778,
+      "checksum": "sha256:82fe2be40d8d17080026bad4280ba3dfa06a9cc61ca80b2c47271b3290a6264b",
+      "kind": "skill",
+      "path": "accusights-compliance/posture-score"
+    },
+    {
+      "bytes": 7414,
+      "checksum": "sha256:ac4403086d8704c8c2abcf9c91b8c9234fdf0b191daa6ff511714cef7b1ebe27",
+      "kind": "skill",
+      "path": "accusights-core/data-boundary"
+    },
+    {
+      "bytes": 5574,
+      "checksum": "sha256:1aa7c971f856f6122769cdd38880f48910c11ee7da9963252780e5a982b9414e",
+      "kind": "skill",
+      "path": "accusights-core/evidence-ledger"
+    },
+    {
+      "bytes": 5964,
+      "checksum": "sha256:151f739c288f7ae8a7171b7ce9b1eab73d856223100c6dc979543feaca352773",
+      "kind": "skill",
+      "path": "accusights-core/local-reduce"
+    },
+    {
+      "bytes": 6922,
+      "checksum": "sha256:d2d7068c108abdfe13f9356cf56903338f17a8c201ea714ea428a21e310a1712",
+      "kind": "skill",
+      "path": "accusights-soc/alert-triage"
+    },
+    {
+      "bytes": 6549,
+      "checksum": "sha256:602aaa0fb322c47bc9880c07c5d231357bad7f05aa3e6726dded04cd9d3a0789",
+      "kind": "skill",
+      "path": "accusights-soc/compound-risk"
+    },
+    {
+      "bytes": 6866,
+      "checksum": "sha256:26f791c355b6c1b87462e6c5ed0c8aebfd63bb28e19f8384cedfccb3829ae475",
+      "kind": "skill",
+      "path": "accusights-soc/containment-gate"
+    },
+    {
+      "bytes": 5084,
+      "checksum": "sha256:14dff7e15caa95820fe794ddd83c3ae78e5776c0c3c9e7198d550881acccb6dc",
+      "kind": "reference",
+      "path": "accusights-soc/containment-gate/references/rails.md"
+    },
+    {
+      "bytes": 6364,
+      "checksum": "sha256:17d16f43d40cdf81588356426500a5989da241292f488f0d5b933365e6f9d0dc",
+      "kind": "skill",
+      "path": "accusights-soc/ioc-correlate"
+    },
+    {
+      "bytes": 6186,
+      "checksum": "sha256:a02c8f6fe13fa000d85e7dec34c47810929e16a7aa92cb61a363953c2b6c7647",
+      "kind": "skill",
+      "path": "accusights-soc/reachability-filter"
+    },
+    {
+      "bytes": 7263,
+      "checksum": "sha256:7cc88f0280d527d22e90f63a50424609c7c0ff5994f397067e699ff429ce9858",
+      "kind": "skill",
+      "path": "accusights-soc/response-authority"
+    },
+    {
+      "bytes": 5843,
+      "checksum": "sha256:db3a768992f1077e8aee35266a011719987205cf4ff3a9333fe9806ccaa25b1b",
+      "kind": "skill",
+      "path": "accusights-soc/verdict-memory"
+    }
+  ],
+  "generated_from": "plugins/",
+  "version": "0.1.0"
+}

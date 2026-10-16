@@ -1,0 +1,8 @@
+{
+  "name": "accusights-compliance",
+  "version": "0.1.0",
+  "description": "Continuous compliance and governance for the client's own tenancy: industry and region to framework selection, control-to-signal evaluation against live telemetry, per-framework posture scoring, control drift detection, autonomous policy lifecycle with human approval, always-ready audit evidence, and underwriter-grade risk evidence. Requires accusights-core.",
+  "author": { "name": "AccuSights" },
+  "homepage": "https://accusights.com",
+  "skills": "./skills"
+}

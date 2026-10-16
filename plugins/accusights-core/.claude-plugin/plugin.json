@@ -1,0 +1,8 @@
+{
+  "name": "accusights-core",
+  "version": "0.1.0",
+  "description": "Required base layer for the AccuSights skillset. Tokenises sensitive client data before it reaches the model and rehydrates it in the output; performs deterministic local reduction so the model reasons over a filtered set rather than a raw feed; and maintains the versioned, hash-chained evidence ledger that makes every determination defensible under later review.",
+  "author": { "name": "AccuSights" },
+  "homepage": "https://accusights.com",
+  "skills": "./skills"
+}

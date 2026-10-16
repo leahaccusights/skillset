@@ -1,0 +1,8 @@
+{
+  "name": "accusights-soc",
+  "version": "0.1.0",
+  "description": "Security operations for the client's own tenancy: reachability-filtered alert triage that reports exploitable paths rather than volume, indexed verdict memory that scales as history grows, threat-intel correlation, compound-risk detection, approval-gated containment, and legal response-authority checks before any action. Requires accusights-core.",
+  "author": { "name": "AccuSights" },
+  "homepage": "https://accusights.com",
+  "skills": "./skills"
+}
